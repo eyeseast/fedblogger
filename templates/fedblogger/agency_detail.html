@@ -1,0 +1,29 @@
+{% extends "fedblogger/base.html" %}
+
+{% block title %}{{ agency.name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{{ agency.name }}</h2>
+
+<div id="entries" class="span-15">
+{% block entries %}
+{% for entry in entry_list %}
+<div id="e{{ forloop.counter }}" class="span-14">
+<h2>{{ entry.title }}</h2>
+<p class="quiet">published {{ entry.pub_date|date:"F j, Y" }} on <a href="{{ entry.blog.get_absolute_url }}">{{ entry.blog }}</a></p>
+	<div class="blog_entry">
+	{{ entry.text|safe }}
+	<p class="quiet"><a href="{{ entry.link }}">Read more and comment</a></p>
+	</div>
+</div>
+{% endfor %}
+{% endblock %}
+</div>
+<div id="blogs" class="span-8 last">
+<h4>Who's blogging at {{ agency.name }}?</h4>
+{% for blog in blog_list %}
+<p><strong><a href="{{ blog.get_absolute_url }}">{{ blog.name }}</a>:</strong></p>
+<div class="quiet">{{ blog.description_html|safe }}</div>
+</div>
+{% endfor %}
+{% endblock %}

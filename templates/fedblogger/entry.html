@@ -1,0 +1,8 @@
+<div id="e{{ forloop.counter }}" class="span-14">
+<h2>{{ entry.title }}</h2>
+<p class="quiet">published {{ entry.pub_date|date:"F j, Y" }} on <a href="{{ entry.blog.get_absolute_url }}">{{ entry.blog }}</a></p>
+	<div class="blog_entry">
+	{{ entry.text|safe }}
+	<p class="quiet"><a href="{{ entry.link }}">Read more and comment</a></p>
+	</div>
+</div>

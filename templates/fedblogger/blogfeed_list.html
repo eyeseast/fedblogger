@@ -1,0 +1,24 @@
+{% extends "fedblogger/base.html" %}
+
+{% block title %}Choose a blog | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div id="entries" class="span-16">
+{% block entries %}
+<h2>Latest posts:</h2>
+<p class="quiet"><a href="{% url fedblogger_entry_river %}">More...</a></p>
+{% for entry in latest %}
+{% include "fedblogger/entry.html" %}
+{% endfor %}
+{% endblock %}
+</div>
+<h3>Choose a blog:</h3>
+<div id="blog-list" class="span-8 last">
+{% block blog_list %}
+{% for blog in object_list %}
+<p><strong><a href="{{ blog.get_absolute_url }}">{{ blog.name }}</a>:</strong></p>
+<div class="quiet">{{ blog.description_html|safe }}</div>
+{% endfor %}
+{% endblock %}
+</div>
+{% endblock %}

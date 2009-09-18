@@ -1,0 +1,11 @@
+{% extends "fedblogger/base.html" %}
+
+{% block title %}{{ blog.name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{{ blog.name }}</h2>
+<p class="quiet">from <a href="{{ agency.get_absolute_url }}">{{ agency.name }}</a></p>
+{% for entry in object_list %}
+{% include "fedblogger/entry.html" %}
+{% endfor %}
+{% endblock %}
