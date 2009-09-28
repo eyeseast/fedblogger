@@ -5,7 +5,7 @@ class BranchAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ['name']}
 
 class AgencyAdmin(admin.ModelAdmin):
-    prepulated_fields = {'slug': ['name']}
+    prepopulated_fields = {'slug': ['name']}
 
 class AuthorTypeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ['name']}
