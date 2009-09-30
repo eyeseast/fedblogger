@@ -1,0 +1,11 @@
+FedBlogger is a simple aggregator for federal government blogs. Most blogs in the executive branch are listed here:
+
+    http://www.usa.gov/Topics/Reference_Shelf/News/blog.shtml
+    
+
+Requirements:
+-------------
+
+- Python 2.4+
+- Python Markdown
+- Python Universal Feedparser
