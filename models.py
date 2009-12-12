@@ -1,9 +1,18 @@
 from django.db import models
 from markdown import markdown
-from tagging.fields import TagField
+from supertagging.fields import SuperTagField
 
+# managers
 
-# Create your models here.
+#class LiveEntryManager(models.Manager):
+#    def live(self):
+#        return self.filter(blog__status=self.blog.APPROVED)
+
+class LiveBlogManager(models.Manager):
+    def live(self):
+        return self.filter(status=self.model.APPROVED)
+
+# models
 
 class GovAbstract(models.Model):
     """
@@ -48,7 +57,8 @@ class Agency(GovAbstract):
     """
     A federal government agency, which is part of a branch.
 
-   For example, the House of Representatives is an agency of the Legislative Branch, while the FDA is part of the Executive Branch.
+    For example, the House of Representatives is an agency of the Legislative Branch,
+    while the FDA is part of the Executive Branch.
     """
     branch = models.ForeignKey(Branch)
     
@@ -105,8 +115,10 @@ class BlogFeed(GovAbstract):
     author_type = models.ForeignKey(AuthorType)
     feed_url = models.URLField()
     status = models.IntegerField(choices=FEED_STATUS_CHOICES, default=PENDING)
-    topics = TagField()
     updated = models.DateTimeField(blank=True, null=True)
+    topics = models.TextField(blank=True)
+    
+    objects = LiveBlogManager()
 
 
     class Meta:
@@ -146,6 +158,9 @@ class BlogEntry(models.Model):
     text = models.TextField(blank=True)
     pub_date = models.DateTimeField()
     guid = models.CharField(max_length=255, unique=True, db_index=True)
+    tags = SuperTagField()
+    
+    #objects = LiveEntryManager()
 
 
     class Meta:
@@ -155,7 +170,7 @@ class BlogEntry(models.Model):
 
 
     def __unicode__(self):
-        return self.title
+        return u"%s: %s" % (self.blog.name, self.title)
 
     
     def get_absolute_url(sefl):

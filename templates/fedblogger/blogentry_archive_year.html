@@ -1,0 +1,7 @@
+{% extends "fedblogger/blogentry_list.html" %}
+
+{% block content %}
+{% for month in date_list %}
+<p><a href="{% url fedblogger_archive_month month.year month|date:'b' %}">{{ month|date:"F" }}</a></p>
+{% endfor %}
+{% endblock %}

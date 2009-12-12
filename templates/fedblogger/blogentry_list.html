@@ -1,14 +1,42 @@
 {% extends "fedblogger/base.html" %}
 
 {% block content %}
+
+{% load supertagging_tags %}
+<div id="entries" class="span-16 colborder">
 {% for entry in object_list %}
-<div id="e{{ forloop.counter }}" class="span-16">
-<h2>{{ entry.title }}</h2>
-<p class="quiet">published {{ entry.pub_date|date:"F j, Y" }} on <a href="{{ entry.blog.get_absolute_url }}">{{ entry.blog }}</a></p>
+<div id="e{{ forloop.counter }}">
+	<h2>{{ entry.title|safe }}</h2>
+	<p class="quiet">published {{ entry.pub_date|date:"F j, Y" }} on <a href="{{ entry.blog.get_absolute_url }}">{{ entry.blog }}</a></p>
 	<div class="blog_entry">
 	{{ entry.text|safe }}
 	<p class="quiet"><a href="{{ entry.link }}">Read more and comment</a></p>
 	</div>
 </div>
 {% endfor %}
+</div>
+<div id="sidebar" class="span-7 last">
+{% block sidebar %}
+{% regroup blog_list by agency as agency_list %}
+	<div id="blogs">
+	<h3>Blogs</h3>
+		{% for agency in agency_list %}
+		<h4>
+			<a href="{{ agency.grouper.get_absolute_url }}">{{ agency.grouper }}</a>
+			<ul>
+				{% for blog in agency.list %}
+				<li><a href="{{ blog.get_absolute_url }}">{{ blog.name }}</a></li>
+				{% endfor %}
+			</ul>
+		</h4>
+		{% endfor %}
+	</div>
+	<div id="tags">
+	{% supertag_cloud_for_model fedblogger.BlogEntry as tag_cloud with steps=7 min_count=10 distribution=linear %}
+	{% for tag in tag_cloud %}
+	<a href="" title="{{ tag.count }}" style="font-size: {{ tag.font_size }}em;">{{ tag.name }}</a>
+	{% endfor %}
+	</div>
+{% endblock %}
+</div>
 {% endblock %}
